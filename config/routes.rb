@@ -35,6 +35,4 @@ Rails.application.routes.draw do
   get 'sessions/error'
   get 'sessions/destroy' 
   get 'sessions/new'
-
-
 end
