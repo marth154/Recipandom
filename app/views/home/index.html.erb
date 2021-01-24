@@ -1,0 +1,39 @@
+<%= render :partial => 'layouts/header', :formats => [:html] %>
+
+<section class="home-presentation">
+  <div class="home-presentation-group-info">
+    <h2>You never know what to eat ?</h2>
+    <p>Don't panic, you've come to the right place. <br>
+      Here you can search and add your best recipes in an instant!</p>
+  </div>
+</section>
+
+<section class="home-recipes">
+  <% @recipes.each do |recipe| %>
+    <div class="card-recipe">
+
+    <div>
+      <img class="img-recipe" src="<%= recipe.url %>"/>
+    </div>
+
+
+      <h4><%= recipe.label %></h4>
+      <hr>
+      <div class="card-recipe-ingredient">
+        <i class="fas fa-book-open"></i>
+        <%= @recipeIngredients.where(recipe_id: recipe.id).length %> ingredients
+      </div>
+
+      <div class="card-recipe-ingredient" >
+        <% @creators.where(id: recipe.creator).each do |creator| %>
+          <i class="fas fa-user"></i>
+          <%= link_to creator.username, "/profil?id="+recipe.creator.to_s %>
+        <% end %>
+      </div>
+      <hr>
+      <p><%= recipe.description %></p>
+      <%= link_to "View Recipe", {controller: "recipe", action: "show", id: recipe.id}, class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+  
+</section>

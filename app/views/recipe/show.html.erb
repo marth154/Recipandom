@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BackRuby</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'recipe', media: 'all', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<%= render :partial => 'layouts/header', :formats => [:html] %>
+
+  <section class="recipe-section">
+      <div class="recipe-image" style="background-image: url(<%= @recipe.url %>)">
+
+      <% if cookies.permanent.signed[:remember_token] %>
+        <% if @favorites.length == 0 %>
+          <%= link_to favorite_recipe_path(@recipe, type: "favorite", id: @recipe.id), method: :put do %>
+            <i class="far fa-heart"></i>
+          <% end %>
+        <% else %>
+          <%= link_to favorite_recipe_path(@recipe, type: "unfavorite", id: @recipe.id), method: :delete do %>
+            <i class='fas fa-heart'></i>
+          <% end %>
+        <% end %>
+    <% end %>
+
+    </div>
+
+      <div class="recipe-info">
+        <h1><%= @recipe.label %></h1>
+        <h2><%= @recipe.description %></h2>
+        <hr>
+
+        <p><b>Ingredients :</b></p>
+
+        <div class="recipe-ingredient-group">
+          <% @recipeIngredients.each do |recipeIngredient| %>
+            <p class="recipe-ingredient"> <%= recipeIngredient.quantity.to_s.sub(/\.?0+$/, '') %> <%= recipeIngredient.unity %>
+
+              <% @ingredients.where(id: recipeIngredient.ingredient_id).each do |ingredient| %>
+                <%= ingredient.name %>
+              <% end %>
+            </p>
+
+          <% end %>
+        </div>
+        <hr>
+
+        <p><b>Steps :</b></p>
+
+        <div class="recipe-step-group">
+          <% @steps.each_with_index  do |step, index| %>
+            <p> <%= index+1 %> :
+              <%= step.description %>
+            </p>
+
+          <% end %>
+        </div>
+
+      </div>
+
+  </section>
+
+</body>
+</html>
+
+

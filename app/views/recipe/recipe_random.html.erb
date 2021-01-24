@@ -1,0 +1,59 @@
+<%= render :partial => 'layouts/header', :formats => [:html] %>
+
+  <section class="recipe-section">
+
+    <% if @rand_recipes[3] %>
+      <div class="recipe-image" style="background-image: url(<%= @rand_recipes[3] %>)">
+    <% else %>
+      <div class="recipe-image" style="background-image: url('https://ctt.trains.com/sitefiles/images/no-preview-available.png')">
+    <% end %>
+
+      <% if @favorites.length === 0 %>
+        <%= link_to favorite_recipe_path(@recipe, type: "favorite", id: @rand_recipes[0]), method: :put do %>
+          <i class="far fa-heart"></i>
+        <% end %>
+      <% else %>
+        <%= link_to favorite_recipe_path(@recipe, type: "unfavorite", id: @rand_recipes[0]), method: :delete do %>
+          <i class='fas fa-heart'></i>
+        <% end %>
+      <% end %>
+
+      </div>
+
+      <div class="recipe-info">
+        <h1><%= @rand_recipes[1] %></h1>
+        <h2><%= @rand_recipes[2] %></h2>
+        <hr>
+
+        <p><b>Ingredients :</b></p>
+
+        <div class="recipe-ingredient-group">
+          <% @recipeIngredients.each do |recipeIngredient| %>
+            <p class="recipe-ingredient"> <%= recipeIngredient.quantity.to_s.sub(/\.?0+$/, '') %> <%= recipeIngredient.unity %>
+
+              <% @ingredients.where(id: recipeIngredient.ingredient_id).each do |ingredient| %>
+                <%= ingredient.name %>
+              <% end %>
+            </p>
+
+          <% end %>
+        </div>
+        <hr>
+
+        <p><b>Steps :</b></p>
+
+        <div class="recipe-step-group">
+          <% @steps.each_with_index  do |step, index| %>
+            <p> <%= index+1 %> :
+              <%= step.description %>
+            </p>
+
+          <% end %>
+        </div>
+
+      </div>
+
+  </section>
+
+</body>
+</html>

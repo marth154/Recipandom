@@ -1,11 +1,65 @@
-<h1>Profil</h1>
+<%= render "layouts/header" %>
+<% if cookies.permanent.signed[:remember_token] %>
+  <% if cookies.permanent.signed[:remember_token][0] == params[:id].to_i %>
+  
+  <h3 class="text-center">Mes favoris</h3>
+  <section class="home-recipes">
+    <% @recipe_favorites.each do |recipe| %>
+      <div class="card card-recipe">
+      
+        <div>
+          <img class="img-recipe" src="<%= recipe.url %>"/>
+        </div>
+        
+        <h4><%= recipe.label %></h4>
+        <hr>
+        <div class="card-recipe-ingredient">
+          <i class="fas fa-book-open"></i>
+          <%= recipe.recipe_ingredients.count %> ingredients
+        </div>
+        <hr>
+        <p><%= recipe.description %></p>
+        <%= link_to "View Recipe", {controller: "recipe", action: "show", id: recipe.id}, class: 'btn btn-primary' %>
+        </div>
+    <% end %>
+  </section>
 
+<%end%>
+<%end%>
 
-<h2>Favoris</h2>
-<ul>
-  <% @favorites.each do |favorite| %>
-    <li>
-      <%= favorite.id_receipe %>
-    </li>
+<% if cookies.permanent.signed[:remember_token] %>
+  <% if cookies.permanent.signed[:remember_token][0] == params[:id].to_i %>
+    <h3 class="text-center">Mes recettes</h3>
   <% end %>
-</ul>
+<% else %>
+  <h3 class="text-center">Ses recettes</h3>  
+<% end %>
+<section class="home-recipes">
+
+  <% @recipes.each do |recipe| %>
+    <div class="card-recipe">
+      <div>
+        <img class="img-recipe" src="<%= recipe.url %>"/>
+      </div>
+
+      <h4><%= recipe.label %></h4>
+      <hr>
+      <div class="card-recipe-ingredient">
+        <i class="fas fa-book-open"></i>
+        <%= @recipeIngredients.where(recipe_id: recipe.id).length %> ingredients
+      </div>
+      <hr>
+      <p><%= recipe.description %></p>
+      <%= link_to "View Recipe", {controller: "recipe", action: "show", id: recipe.id}, class: 'btn btn-primary' %>
+      <br><br>
+      <% if cookies.permanent.signed[:remember_token] %>
+        <% if cookies.permanent.signed[:remember_token][0] == params[:id].to_i %>
+          <%= link_to "Delete Recipe", {controller: "recipe", action: "delete", id: recipe.id}, class: 'btn btn-danger' %>
+        <%end %>
+      <%end %>
+    </div>
+  <% end %>
+  
+</section>
+
+
